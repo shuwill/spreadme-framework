@@ -1,0 +1,2 @@
+org.spreadme.boot.autoconfigure.EnableAutoConfiguration=\
+org.spreadme.boot.autoconfigure.task.TaskExecutionAutoConfiguration
