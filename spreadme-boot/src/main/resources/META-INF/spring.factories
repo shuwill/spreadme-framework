@@ -1,2 +1,10 @@
+# AutoConfiguration
 org.spreadme.boot.autoconfigure.EnableAutoConfiguration=\
 org.spreadme.boot.autoconfigure.task.TaskExecutionAutoConfiguration
+# Application Listeners
+org.springframework.context.ApplicationListener=\
+org.spreadme.boot.bootstrap.BootstrapApplicationListener,\
+org.spreadme.boot.bootstrap.LoggingSystemShutdownListener
+# Bootstrap components
+org.spreadme.boot.bootstrap.BootstrapConfiguration=\
+org.spreadme.boot.config.PropertySourceBootstrapConfiguration

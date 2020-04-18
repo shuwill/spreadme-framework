@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.bootstrap.config;
+package org.spreadme.boot.config;
+
+import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +28,9 @@ import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.spreadme.boot.bootstrap.BootstrapApplicationListener;
+import org.spreadme.boot.env.EnvironmentChangeEvent;
+import org.spreadme.boot.logging.LoggingRebinder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.config.ConfigFileApplicationListener;
@@ -35,9 +40,6 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.logging.LogFile;
 import org.springframework.boot.logging.LoggingInitializationContext;
 import org.springframework.boot.logging.LoggingSystem;
-import org.springframework.cloud.bootstrap.BootstrapApplicationListener;
-import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
-import org.springframework.cloud.logging.LoggingRebinder;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -52,13 +54,11 @@ import org.springframework.core.env.StandardEnvironment;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
-import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
-
 /**
  * @author Dave Syer
  *
  */
-@Configuration(proxyBeanMethods = false)
+@Configuration
 @EnableConfigurationProperties(PropertySourceBootstrapProperties.class)
 public class PropertySourceBootstrapConfiguration implements
 		ApplicationContextInitializer<ConfigurableApplicationContext>, Ordered {

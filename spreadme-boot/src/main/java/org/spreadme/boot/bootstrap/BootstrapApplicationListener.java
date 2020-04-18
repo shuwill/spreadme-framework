@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.bootstrap;
+package org.spreadme.boot.bootstrap;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -26,6 +26,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.spreadme.boot.bootstrap.support.OriginTrackedCompositePropertySource;
 
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.boot.Banner.Mode;
@@ -39,8 +41,6 @@ import org.springframework.boot.context.logging.LoggingApplicationListener;
 import org.springframework.boot.env.OriginTrackedMapPropertySource;
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginLookup;
-import org.springframework.cloud.bootstrap.encrypt.EnvironmentDecryptApplicationInitializer;
-import org.springframework.cloud.bootstrap.support.OriginTrackedCompositePropertySource;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -54,7 +54,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
-import org.springframework.core.env.PropertySource.StubPropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.util.ReflectionUtils;
@@ -177,7 +176,7 @@ public class BootstrapApplicationListener
 		bootstrapProperties.addFirst(
 				new MapPropertySource(BOOTSTRAP_PROPERTY_SOURCE_NAME, bootstrapMap));
 		for (PropertySource<?> source : environment.getPropertySources()) {
-			if (source instanceof StubPropertySource) {
+			if (source instanceof PropertySource.StubPropertySource) {
 				continue;
 			}
 			bootstrapProperties.addLast(source);
@@ -328,14 +327,15 @@ public class BootstrapApplicationListener
 		DelegatingEnvironmentDecryptApplicationInitializer decrypter = null;
 		Set<ApplicationContextInitializer<?>> initializers = new LinkedHashSet<>();
 		for (ApplicationContextInitializer<?> ini : application.getInitializers()) {
-			if (ini instanceof EnvironmentDecryptApplicationInitializer) {
-				@SuppressWarnings("rawtypes")
-				ApplicationContextInitializer del = ini;
-				decrypter = new DelegatingEnvironmentDecryptApplicationInitializer(del);
-				initializers.add(ini);
-				initializers.add(decrypter);
-			}
-			else if (ini instanceof DelegatingEnvironmentDecryptApplicationInitializer) {
+//			if (ini instanceof EnvironmentDecryptApplicationInitializer) {
+//				@SuppressWarnings("rawtypes")
+//				ApplicationContextInitializer del = ini;
+//				decrypter = new DelegatingEnvironmentDecryptApplicationInitializer(del);
+//				initializers.add(ini);
+//				initializers.add(decrypter);
+//			}
+//			else
+			if (ini instanceof DelegatingEnvironmentDecryptApplicationInitializer) {
 				// do nothing
 			}
 			else {
