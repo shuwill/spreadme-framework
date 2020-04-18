@@ -32,7 +32,6 @@ import org.spreadme.commons.system.sampler.ProcessorSampler;
 import org.spreadme.commons.util.StringUtil;
 import org.spreadme.component.annotation.EnableCache;
 import org.spreadme.component.annotation.EnableMessage;
-import org.spreadme.component.job.Scheduler;
 import org.spreadme.component.test.entity.User;
 import org.spreadme.component.test.message.UserMessage;
 import org.spreadme.component.test.task.TestTask;
@@ -61,8 +60,6 @@ public class HazelcastTest {
 	private MessagePublisher<UserMessage> publisher;
 	@Autowired
 	private TestTask testTask;
-	@Autowired
-	private Scheduler scheduler;
 
 	@Test
 	public void testCacheClient() throws InterruptedException {
