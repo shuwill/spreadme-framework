@@ -1,25 +1,8 @@
 stages:
-  - clean
-  - compile
-  - test
-  - install
+  - build
 
-clean:
-  stage: clean
+build:
+  stage: build
   script:
-    - mvn clean
-
-compile:
-  stage: compile
-  script:
-    - mvn compile
-
-test:
-  stage: test
-  script:
-    - mvn test
-
-install:
-  stage: install
-  script:
-    - mvn install
+    - chmod u+x build.sh
+    - sh build.sh
