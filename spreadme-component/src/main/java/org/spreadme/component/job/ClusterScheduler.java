@@ -40,7 +40,6 @@ import org.spreadme.component.job.task.Task;
 import org.spreadme.component.job.task.TaskInfo;
 import org.spreadme.component.job.task.TaskMessage;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -54,18 +53,19 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 
 	private Map<String, TaskInfo> taskInfos = new ConcurrentHashMap<>();
 
-	private ThreadPoolTaskScheduler taskScheduler;
 
 	private TaskLock lock;
-
-	@Autowired
+	private ThreadPoolTaskScheduler taskScheduler;
 	private CacheClient<String, Set<TaskInfo>> cacheClient;
-	@Autowired
 	private MessagePublisher<TaskMessage> messagePublisher;
 
-	public ClusterScheduler(TaskLock lock) {
-		this.taskScheduler = new ThreadPoolTaskScheduler();
+	public ClusterScheduler(TaskLock lock, ThreadPoolTaskScheduler taskScheduler,
+			CacheClient<String, Set<TaskInfo>> cacheClient,
+			MessagePublisher<TaskMessage> messagePublisher) {
 		this.lock = lock;
+		this.taskScheduler = taskScheduler;
+		this.cacheClient = cacheClient;
+		this.messagePublisher = messagePublisher;
 	}
 
 	@Override

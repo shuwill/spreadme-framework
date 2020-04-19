@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 /**
  * hazelcast message configuration
@@ -40,6 +41,8 @@ public class HazelcastMessageConfiguration {
 	private HazelcastInstance instance;
 	@Autowired
 	private ThreadPoolTaskExecutor executor;
+	@Autowired
+	private ThreadPoolTaskScheduler scheduler;
 
 	@Bean
 	public HazelcastMessageListenerRegistar messageListenerRegistar() {
@@ -48,7 +51,7 @@ public class HazelcastMessageConfiguration {
 
 	@Bean
 	public <M extends Message> MessageProducer<M> messageProducer() {
-		return new HazelcastMessageProducer<>(instance);
+		return new HazelcastMessageProducer<>(instance, scheduler);
 	}
 
 	@Bean

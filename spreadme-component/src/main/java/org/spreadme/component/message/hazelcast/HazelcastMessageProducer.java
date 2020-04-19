@@ -26,6 +26,8 @@ import org.spreadme.commons.message.Message;
 import org.spreadme.commons.message.MessageProducer;
 import org.spreadme.commons.util.StringUtil;
 
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+
 /**
  * hazelcast message producer
  * @author shuwei.wang
@@ -35,9 +37,11 @@ public class HazelcastMessageProducer<M extends Message> implements MessageProdu
 	private final Logger logger = LoggerFactory.getLogger(HazelcastMessageProducer.class);
 
 	private HazelcastInstance instance;
+	private ThreadPoolTaskScheduler taskScheduler;
 
-	public HazelcastMessageProducer(HazelcastInstance instance) {
+	public HazelcastMessageProducer(HazelcastInstance instance, ThreadPoolTaskScheduler taskScheduler) {
 		this.instance = instance;
+		this.taskScheduler = taskScheduler;
 	}
 
 	@Override
@@ -54,6 +58,7 @@ public class HazelcastMessageProducer<M extends Message> implements MessageProdu
 
 	@Override
 	public void produce(M message, long delaytime, TimeUnit timeUnit) {
-		//TODO
+		taskScheduler.scheduleWithFixedDelay(() -> this.produce(message),
+				timeUnit.toMillis(delaytime));
 	}
 }

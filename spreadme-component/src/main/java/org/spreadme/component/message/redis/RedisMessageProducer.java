@@ -22,6 +22,7 @@ import org.spreadme.commons.message.Message;
 import org.spreadme.commons.message.MessageProducer;
 
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 /**
  * redis message producer
@@ -31,9 +32,11 @@ public class RedisMessageProducer<M extends Message> implements MessageProducer<
 
 
 	private RedisTemplate<String, M> redisTemplate;
+	private ThreadPoolTaskScheduler taskScheduler;
 
-	public RedisMessageProducer(RedisTemplate<String, M> redisTemplate) {
+	public RedisMessageProducer(RedisTemplate<String, M> redisTemplate, ThreadPoolTaskScheduler taskScheduler) {
 		this.redisTemplate = redisTemplate;
+		this.taskScheduler = taskScheduler;
 	}
 
 	@Override
@@ -43,6 +46,6 @@ public class RedisMessageProducer<M extends Message> implements MessageProducer<
 
 	@Override
 	public void produce(M message, long delaytime, TimeUnit timeUnit) {
-		//TODO
+		taskScheduler.scheduleWithFixedDelay(() -> this.produce(message), timeUnit.toMillis(delaytime));
 	}
 }

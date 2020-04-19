@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 /**
  * RedisMessageConfiguration
@@ -43,6 +44,8 @@ public class RedisMessageConfiguration {
 	private RedisSerializer<Object> serializer;
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
+	@Autowired
+	private ThreadPoolTaskScheduler scheduler;
 
 	@Bean
 	public RedisMessageListenerRegistar messageListenerRegistar() {
@@ -51,7 +54,7 @@ public class RedisMessageConfiguration {
 
 	@Bean
 	public <M extends Message> MessageProducer<M> messageProducer(RedisTemplate<String, M> template) {
-		return new RedisMessageProducer<>(template);
+		return new RedisMessageProducer<>(template, scheduler);
 	}
 
 	@Bean

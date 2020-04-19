@@ -16,6 +16,8 @@
 
 package org.spreadme.component.job;
 
+import java.util.Set;
+
 import com.hazelcast.core.HazelcastInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +28,13 @@ import org.spreadme.component.hazelcast.HazelcastInstanceFactory;
 import org.spreadme.component.job.lock.HazelcastTaskLock;
 import org.spreadme.component.job.lock.RedisTaskLock;
 import org.spreadme.component.job.lock.TaskLock;
+import org.spreadme.component.job.task.TaskInfo;
+import org.spreadme.component.job.task.TaskMessage;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 /**
  * Scheduler AutoConfiguration
@@ -54,9 +59,12 @@ public class SchedulerConfiguration {
 
 	@Bean
 	@ConditionalOnBean({TaskLock.class, CacheClient.class, MessagePublisher.class})
-	public Scheduler scheduler(TaskLock lock) {
+	public Scheduler scheduler(TaskLock lock, ThreadPoolTaskScheduler taskScheduler,
+			CacheClient<String, Set<TaskInfo>> cacheClient,
+			MessagePublisher<TaskMessage> messagePublisher) {
+
 		logger.info("use the tasklock {}", lock.getClass().getName());
-		return new ClusterScheduler(lock);
+		return new ClusterScheduler(lock, taskScheduler, cacheClient, messagePublisher);
 	}
 
 }
