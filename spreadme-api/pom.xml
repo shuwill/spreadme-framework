@@ -27,7 +27,7 @@
 	</parent>
 
 	<artifactId>spreadme-api</artifactId>
-	<version>1.5.2</version>
+	<version>${parent.version}</version>
 
 	<name>Spreadme Api</name>
 	<description>spreadme api</description>

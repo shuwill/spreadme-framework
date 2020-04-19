@@ -16,12 +16,14 @@
 
 package org.spreadme.security.web;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.spreadme.commons.lang.Charsets;
+import org.spreadme.commons.util.IOUtil;
 
 /**
  * RedirectStrategy
@@ -53,7 +55,9 @@ public interface RedirectStrategy {
 		response.setHeader("Expires", "0");
 		response.setHeader("Pragma", "No-cache");
 		if (message != null) {
-			WebUtil.flush(message.getBytes(Charsets.UTF_8), response);
+			ByteArrayInputStream bis = new ByteArrayInputStream(message.getBytes(Charsets.UTF_8));
+			IOUtil.copy(bis, response.getOutputStream());
+			response.getOutputStream().flush();
 		}
 	}
 }

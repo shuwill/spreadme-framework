@@ -9,6 +9,7 @@ spreadme-boot
 spreadme-data
 spreadme-component
 spreadme-web
+spreadme-security
 )
 for project in "${projects[@]}"
 do
