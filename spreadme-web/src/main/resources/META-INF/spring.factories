@@ -1,0 +1,6 @@
+org.spreadme.boot.autoconfigure.EnableAutoConfiguration=\
+org.spreadme.web.config.ServletWebServerFactoryAutoConfiguration,\
+org.spreadme.web.config.DispatcherServletAutoConfiguration,\
+org.spreadme.web.config.MultipartAutoConfiguration,\
+org.spreadme.web.config.HttpMessageConvertersAutoConfiguration,\
+org.spreadme.web.config.WebMvcAutoConfiguration
