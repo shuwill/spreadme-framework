@@ -23,12 +23,10 @@ import org.spreadme.boot.config.PropertySourceLocator;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
-import org.springframework.stereotype.Component;
 
 /**
  * @author shuwei.wang
  */
-@Component
 public class CustomPropertySourceLocator implements PropertySourceLocator {
 
 	@Override

@@ -18,6 +18,8 @@ package org.spreadme.boot.test.config;
 
 import org.spreadme.boot.condition.ConditionalOnMissingBean;
 import org.spreadme.boot.condition.ConditionalOnProperty;
+import org.spreadme.boot.config.PropertySourceLocator;
+import org.spreadme.boot.test.main.CustomPropertySourceLocator;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,5 +35,10 @@ public class ConfigutauonTest {
 	@ConditionalOnProperty(name = {"spreadme.test", "spreadme.test1"}, havingValue = "test", matchIfMissing = true)
 	public HelloService helloService() {
 		return new HelloServiceImpl();
+	}
+
+	@Bean
+	public PropertySourceLocator propertySourceLocator(){
+		return new CustomPropertySourceLocator();
 	}
 }
