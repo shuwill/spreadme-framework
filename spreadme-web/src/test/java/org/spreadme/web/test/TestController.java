@@ -16,17 +16,21 @@
 
 package org.spreadme.web.test;
 
-import org.spreadme.boot.SpringBootApplication;
+import org.spreadme.web.result.ResultMessage;
 
-import org.springframework.boot.SpringApplication;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author shuwei.wang
  */
-@SpringBootApplication
-public class SpreadmeWebTest {
+@RestController
+@RequestMapping
+public class TestController {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpreadmeWebTest.class);
+	@PostMapping("/test")
+	public ResultMessage test(ArticleVO vo){
+		return ResultMessage.SUCCESS;
 	}
 }
