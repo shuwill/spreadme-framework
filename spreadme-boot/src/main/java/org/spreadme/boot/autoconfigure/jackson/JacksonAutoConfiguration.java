@@ -52,7 +52,6 @@ public class JacksonAutoConfiguration {
 			// 忽略transient字段
 			objectMapper.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
 			objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-			objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 			objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
