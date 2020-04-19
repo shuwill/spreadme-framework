@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.spreadme.cache;
+package org.spreadme.commons.cache;
 
 import java.io.Serializable;
 

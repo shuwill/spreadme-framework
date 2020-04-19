@@ -1,11 +1,11 @@
 /*
- * Copyright [3/23/20 6:01 PM] [shuwei.wang (c) wswill@foxmail.com]
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.spreadme.commons.util;
+package org.spreadme.web.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.spreadme.commons.lang.Charsets;
+import org.spreadme.commons.util.IOUtil;
+import org.spreadme.commons.util.StringUtil;
 
 public abstract class WebUtil {
 
@@ -81,4 +83,15 @@ public abstract class WebUtil {
 	public static String encodedUrl(StringBuffer url) throws IOException {
 		return URLEncoder.encode(url.toString(), Charsets.UTF_8.name());
 	}
+
+	/**
+	 * 判断是否是AJAX请求
+	 *
+	 * @param request HttpServletRequest
+	 * @return is ajax request
+	 */
+	public static boolean isXMLHttpRequest(HttpServletRequest request) {
+		return "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"));
+	}
+
 }

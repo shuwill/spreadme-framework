@@ -22,7 +22,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import org.spreadme.cache.CacheClient;
+import org.spreadme.commons.cache.CacheClient;
 
 
 /**

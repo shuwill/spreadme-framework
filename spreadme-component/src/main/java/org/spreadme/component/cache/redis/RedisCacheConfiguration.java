@@ -16,7 +16,7 @@
 
 package org.spreadme.component.cache.redis;
 
-import org.spreadme.cache.CacheClient;
+import org.spreadme.commons.cache.CacheClient;
 import org.spreadme.component.annotation.EnableRedis;
 
 import org.springframework.context.annotation.Bean;

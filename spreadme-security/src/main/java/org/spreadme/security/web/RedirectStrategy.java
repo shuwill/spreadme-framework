@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.spreadme.commons.lang.Charsets;
-import org.spreadme.security.util.WebUtil;
 
 /**
  * RedirectStrategy

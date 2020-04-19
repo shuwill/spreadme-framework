@@ -31,7 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import org.spreadme.cache.CacheClient;
+import org.spreadme.commons.cache.CacheClient;
 import org.spreadme.commons.cache.support.LocalCacheClient;
 
 /**

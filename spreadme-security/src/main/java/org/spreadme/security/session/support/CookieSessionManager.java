@@ -23,7 +23,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.spreadme.cache.CacheClient;
+import org.spreadme.commons.cache.CacheClient;
 import org.spreadme.commons.id.IdentifierGenerator;
 import org.spreadme.commons.id.support.UUIDGenerator;
 import org.spreadme.commons.util.StringUtil;
