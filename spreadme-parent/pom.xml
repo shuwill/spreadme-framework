@@ -5,12 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
+		<groupId>org.spreadme</groupId>
+		<artifactId>spreadme-dependencies</artifactId>
+		<version>1.5.2</version>
 	</parent>
 
-	<groupId>org.spreadme</groupId>
 	<artifactId>spreadme-parent</artifactId>
 	<version>1.5.2</version>
 	<packaging>pom</packaging>
@@ -30,10 +29,38 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.spreadme</groupId>
-				<artifactId>spreadme-dependencies</artifactId>
+				<artifactId>spreadme-commons</artifactId>
 				<version>1.5.2</version>
-				<type>pom</type>
-				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.spreadme</groupId>
+				<artifactId>spreadme-boot</artifactId>
+				<version>1.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.spreadme</groupId>
+				<artifactId>spreadme-data</artifactId>
+				<version>1.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.spreadme</groupId>
+				<artifactId>spreadme-component</artifactId>
+				<version>1.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.spreadme</groupId>
+				<artifactId>spreadme-security</artifactId>
+				<version>1.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.spreadme</groupId>
+				<artifactId>spreadme-web</artifactId>
+				<version>1.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.spreadme</groupId>
+				<artifactId>spreadme-test</artifactId>
+				<version>1.5.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

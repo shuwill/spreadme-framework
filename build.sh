@@ -7,6 +7,7 @@ spreadme-commons
 spreadme-boot
 spreadme-data
 spreadme-component
+spreadme-web
 )
 for project in "${projects[@]}"
 do
