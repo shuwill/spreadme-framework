@@ -16,10 +16,6 @@
 
 package org.spreadme.component.redis;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.spreadme.boot.condition.ConditionalOnMissingBean;
 
@@ -56,14 +52,8 @@ public class RedisConfiguration {
 	}
 
 	@Bean
-	public RedisSerializer redisSerializer() {
+	public RedisSerializer redisSerializer(ObjectMapper objectMapper) {
 		Jackson2JsonRedisSerializer<Object> jsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
-		ObjectMapper objectMapper = new ObjectMapper();
-		// 忽略transient字段
-		objectMapper.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
-		objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-		objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		jsonRedisSerializer.setObjectMapper(objectMapper);
 		return jsonRedisSerializer;
 	}

@@ -143,6 +143,7 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 	@EventListener
 	public void endSchedule(ContextClosedEvent event) {
 		this.taskScheduler.shutdown();
+		//TODO all cluster end will clear cache
 		logger.info("schedule {} end.", getId());
 	}
 
