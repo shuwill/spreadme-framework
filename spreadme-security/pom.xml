@@ -16,7 +16,6 @@
 	<name>Spreadme Security</name>
 	<description>java security and auth libs</description>
 
-
 	<dependencies>
 		<dependency>
 			<groupId>org.spreadme</groupId>
