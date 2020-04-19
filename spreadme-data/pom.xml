@@ -46,12 +46,10 @@
 		<dependency>
 			<groupId>org.spreadme</groupId>
 			<artifactId>spreadme-boot</artifactId>
-			<version>${parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.spreadme</groupId>
 			<artifactId>spreadme-commons</artifactId>
-			<version>${parent.version}</version>
 		</dependency>
 
 		<dependency>
@@ -94,7 +92,6 @@
 		<dependency>
 			<groupId>org.spreadme</groupId>
 			<artifactId>spreadme-test</artifactId>
-			<version>${parent.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

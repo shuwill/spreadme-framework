@@ -26,6 +26,31 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.spreadme</groupId>
+				<artifactId>spreadme-commons</artifactId>
+				<version>1.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.spreadme</groupId>
+				<artifactId>spreadme-boot</artifactId>
+				<version>1.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.spreadme</groupId>
+				<artifactId>spreadme-data</artifactId>
+				<version>1.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.spreadme</groupId>
+				<artifactId>spreadme-component</artifactId>
+				<version>1.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.spreadme</groupId>
+				<artifactId>spreadme-test</artifactId>
+				<version>1.5.2</version>
+			</dependency>
 			<!--mybatis-->
 			<dependency>
 				<groupId>org.mybatis</groupId>

@@ -44,7 +44,6 @@
 		<dependency>
 			<groupId>org.spreadme</groupId>
 			<artifactId>spreadme-test</artifactId>
-			<version>${parent.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
