@@ -26,7 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.spreadme.boot.SpringBootApplication;
-import org.spreadme.commons.cache.CacheClient;
+import org.spreadme.cache.CacheClient;
 import org.spreadme.commons.message.MessagePublisher;
 import org.spreadme.commons.system.sampler.ProcessorSampler;
 import org.spreadme.commons.util.StringUtil;

@@ -29,6 +29,11 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.spreadme</groupId>
+				<artifactId>spreadme-api</artifactId>
+				<version>1.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.spreadme</groupId>
 				<artifactId>spreadme-commons</artifactId>
 				<version>1.5.2</version>
 			</dependency>

@@ -3,6 +3,7 @@ projects=(
 spreadme-dependencies
 spreadme-parent
 spreadme-test
+spreadme-api
 spreadme-commons
 spreadme-boot
 spreadme-data

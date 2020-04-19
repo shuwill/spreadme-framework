@@ -18,7 +18,7 @@ package org.spreadme.security.auth;
 
 import java.security.Principal;
 
-import org.spreadme.commons.cache.Cacheable;
+import org.spreadme.cache.Cacheable;
 
 
 public class AuthenticatedToken<P extends Principal> extends CredentialsToken<Principal> implements Cacheable {

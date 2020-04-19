@@ -17,7 +17,7 @@
 package org.spreadme.component.cache.hazelcast;
 
 import com.hazelcast.core.HazelcastInstance;
-import org.spreadme.commons.cache.CacheClient;
+import org.spreadme.cache.CacheClient;
 import org.spreadme.component.annotation.EnableHazelcast;
 
 import org.springframework.context.annotation.Bean;

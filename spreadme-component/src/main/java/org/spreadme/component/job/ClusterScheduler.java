@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.spreadme.commons.cache.CacheClient;
+import org.spreadme.cache.CacheClient;
 import org.spreadme.commons.lang.Bools;
 import org.spreadme.commons.lang.Reflect;
 import org.spreadme.commons.message.MessageListener;

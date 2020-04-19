@@ -22,7 +22,7 @@ import com.hazelcast.core.HazelcastInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spreadme.boot.condition.ConditionalOnBean;
-import org.spreadme.commons.cache.CacheClient;
+import org.spreadme.cache.CacheClient;
 import org.spreadme.commons.message.MessagePublisher;
 import org.spreadme.component.hazelcast.HazelcastInstanceFactory;
 import org.spreadme.component.job.lock.HazelcastTaskLock;

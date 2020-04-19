@@ -22,7 +22,8 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import org.spreadme.commons.cache.CacheClient;
+import org.spreadme.cache.CacheClient;
+
 
 /**
  * 通过ConcurrentHashMap实现的本地缓存 Simple

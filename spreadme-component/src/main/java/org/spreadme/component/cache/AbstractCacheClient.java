@@ -16,7 +16,7 @@
 
 package org.spreadme.component.cache;
 
-import org.spreadme.commons.cache.CacheClient;
+import org.spreadme.cache.CacheClient;
 
 /**
  * abstract cache client
