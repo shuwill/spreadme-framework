@@ -1,7 +1,9 @@
 # AutoConfiguration
 org.spreadme.boot.autoconfigure.EnableAutoConfiguration=\
 org.spreadme.boot.autoconfigure.task.TaskExecutionAutoConfiguration,\
-org.spreadme.boot.autoconfigure.task.TaskSchedulingAutoConfiguration
+org.spreadme.boot.autoconfigure.task.TaskSchedulingAutoConfiguration,\
+org.spreadme.boot.autoconfigure.jackson.JacksonAutoConfiguration,\
+org.spreadme.boot.autoconfigure.validation.ValidationAutoConfiguration
 # Application Listeners
 org.springframework.context.ApplicationListener=\
 org.spreadme.boot.bootstrap.BootstrapApplicationListener,\
