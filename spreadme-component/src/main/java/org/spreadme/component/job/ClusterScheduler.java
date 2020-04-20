@@ -17,10 +17,9 @@
 package org.spreadme.component.job;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +27,6 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.spreadme.commons.cache.CacheClient;
 import org.spreadme.commons.lang.Bools;
 import org.spreadme.commons.lang.Reflect;
 import org.spreadme.commons.message.MessageListener;
@@ -51,21 +49,19 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 
 	private final Logger logger = LoggerFactory.getLogger(ClusterScheduler.class);
 
-	private Map<String, TaskInfo> taskInfos = new ConcurrentHashMap<>();
+	private final static String ID = UUID.randomUUID().toString();
 
+	private Map<String, TaskInfo> taskInfos = new ConcurrentHashMap<>();
 
 	private TaskLock lock;
 	private ThreadPoolTaskScheduler taskScheduler;
-	private CacheClient<String, Set<TaskInfo>> cacheClient;
 	private MessagePublisher<TaskMessage> messagePublisher;
 
-	public ClusterScheduler(TaskLock lock, ThreadPoolTaskScheduler taskScheduler,
-			CacheClient<String, Set<TaskInfo>> cacheClient,
+	public ClusterScheduler(TaskLock lock,
+			ThreadPoolTaskScheduler taskScheduler,
 			MessagePublisher<TaskMessage> messagePublisher) {
 		this.lock = lock;
 		this.taskScheduler = taskScheduler;
-		this.cacheClient = cacheClient;
-		this.messagePublisher = messagePublisher;
 	}
 
 	@Override
@@ -94,7 +90,7 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 				return;
 			}
 			try {
-				logger.debug("{} task is running.", tasksName);
+				logger.info("{} task is running.", tasksName);
 				task.execute();
 			}
 			finally {
@@ -103,31 +99,28 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 
 		}, new CronTrigger(task.getCorn()));
 
-		TaskInfo taskInfo = new TaskInfo(tasksName, task.getCorn(), false, scheduledFuture);
-		taskInfos.put(tasksName, taskInfo);
+		taskInfos.put("", new TaskInfo(task.getName(), task.getCorn(), false, scheduledFuture));
 
-		Set<TaskInfo> taskInfoSet = cacheClient.get(getId());
-		if (taskInfoSet == null) {
-			taskInfoSet = new HashSet<>();
-		}
-		taskInfoSet.add(taskInfo);
-		cacheClient.put(getId(), taskInfoSet);
 	}
 
 	@Override
 	public String getId() {
-		return this.getClass().getSimpleName();
+		return ID;
 	}
 
 	@Override
-	public Set<TaskInfo> getAllTask() {
-		return cacheClient.get(getId());
-	}
-
-	@Override
-	public void edit(String taskName, boolean isCancel, String cron) {
+	public void cancel(String taskName) {
 		TaskMessage message = new TaskMessage();
-		message.setInfo(new TaskInfo(taskName, cron, isCancel));
+		message.setCancel(true);
+		message.setTaskName(taskName);
+		messagePublisher.publish(message);
+	}
+
+	@Override
+	public void cron(String taskName, String cron) {
+		TaskMessage message = new TaskMessage();
+		message.setTaskName(taskName);
+		message.setCron(cron);
 		messagePublisher.publish(message);
 	}
 
@@ -149,15 +142,14 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 
 	@Override
 	public void on(TaskMessage message) {
-		TaskInfo taskInfo = message.getInfo();
-		TaskInfo rawTaskInfo = taskInfos.get(taskInfo.getName());
-		if (rawTaskInfo != null) {
-			ScheduledFuture<?> future = rawTaskInfo.getFuture();
+		TaskInfo taskInfo = taskInfos.get(message.getTaskName());
+		if (taskInfo != null) {
+			ScheduledFuture<?> future = taskInfo.getFuture();
 			CronTrigger trigger = Reflect.of(future).field("trigger").get();
-			String cron = taskInfo.getCron();
+			String cron = message.getCron();
 			if (Bools.isTure(taskInfo.getCancel())) {
 				future.cancel(true);
-				logger.info("task {} is canceled.", rawTaskInfo.getName());
+				logger.info("task {} is canceled.", taskInfo.getName());
 				return;
 			}
 			if (StringUtil.isNotBlank(cron) && trigger != null && !cron.equals(trigger.getExpression())) {

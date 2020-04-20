@@ -18,6 +18,10 @@ package org.spreadme.component.job.lock;
 
 import java.util.concurrent.TimeUnit;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import redis.clients.jedis.JedisCommands;
+
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -26,6 +30,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 public class RedisTaskLock implements TaskLock {
 
+	private ObjectMapper objectMapper;
 	private RedisTemplate<String, Object> redisTemplate;
 
 	public RedisTaskLock(RedisTemplate<String, Object> redisTemplate) {
@@ -34,16 +39,12 @@ public class RedisTaskLock implements TaskLock {
 
 	@Override
 	public boolean lock(String key, Object value, long timeout, TimeUnit timeunit) {
-		if (redisTemplate.opsForValue().setIfAbsent(key, value)) {
-			redisTemplate.expire(key, timeout, timeunit);
-			return true;
-		}
-		long expireTime = redisTemplate.getExpire(key);
-		if (expireTime < 0 || expireTime > timeout) {
-			redisTemplate.delete(key);
-			lock(key, value, timeout, timeunit);
-		}
-		return false;
+		final long expire = timeunit.toSeconds(timeout);
+		String result = redisTemplate.execute((RedisCallback<String>) connection -> {
+			JedisCommands commands = (JedisCommands) connection.getNativeConnection();
+			return commands.set(key, value.toString(), "NX", "PX", expire);
+		});
+		return "OK".equals(result);
 	}
 
 	@Override

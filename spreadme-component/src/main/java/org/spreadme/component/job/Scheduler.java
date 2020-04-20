@@ -17,10 +17,8 @@
 package org.spreadme.component.job;
 
 import java.util.Collection;
-import java.util.Set;
 
 import org.spreadme.component.job.task.Task;
-import org.spreadme.component.job.task.TaskInfo;
 
 
 public interface Scheduler {
@@ -29,7 +27,7 @@ public interface Scheduler {
 
 	String getId();
 
-	Set<TaskInfo> getAllTask();
+	void cancel(String taskName);
 
-	void edit(String taskName, boolean isCancel, String cron);
+	void cron(String taskName, String cron);
 }

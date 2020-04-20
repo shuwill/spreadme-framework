@@ -32,19 +32,16 @@ public class HazelcastTaskLock implements TaskLock {
 
 	private final Logger logger = LoggerFactory.getLogger(HazelcastTaskLock.class);
 
-	private HazelcastInstance instance;
+	private IMap<String, Object> tasks;
 
 	public HazelcastTaskLock(HazelcastInstance instance) {
-		this.instance = instance;
+		this.tasks = instance.getMap(this.getClass().getName());
 	}
 
 	@Override
 	public boolean lock(String key, Object value, long timeout, TimeUnit timeunit) {
-		IMap<String, Object> tasks = this.instance.getMap(this.getClass().getName());
 		try {
-			if (tasks.tryLock(key, 0, timeunit, timeout, timeunit)) {
-				return true;
-			}
+			return this.tasks.tryLock(key, 0, timeunit, timeout, timeunit);
 		}
 		catch (InterruptedException e) {
 			logger.error(StringUtil.stringifyException(e));
@@ -54,6 +51,6 @@ public class HazelcastTaskLock implements TaskLock {
 
 	@Override
 	public void unlock(String key) {
-
+		this.tasks.unlock(key);
 	}
 }

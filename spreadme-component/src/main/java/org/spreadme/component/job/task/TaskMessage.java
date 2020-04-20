@@ -26,13 +26,31 @@ public class TaskMessage implements Message {
 
 	private static final long serialVersionUID = -459709068017433665L;
 
-	private TaskInfo info;
+	private String taskName;
+	private Boolean cancel = false;
+	private String cron;
 
-	public TaskInfo getInfo() {
-		return info;
+	public String getTaskName() {
+		return taskName;
 	}
 
-	public void setInfo(TaskInfo info) {
-		this.info = info;
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
+	}
+
+	public Boolean getCancel() {
+		return cancel;
+	}
+
+	public void setCancel(Boolean cancel) {
+		this.cancel = cancel;
+	}
+
+	public String getCron() {
+		return cron;
+	}
+
+	public void setCron(String cron) {
+		this.cron = cron;
 	}
 }
