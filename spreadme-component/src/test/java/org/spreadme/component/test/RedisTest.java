@@ -34,7 +34,6 @@ import org.spreadme.component.cache.CacheType;
 import org.spreadme.component.message.MessageType;
 import org.spreadme.component.test.entity.User;
 import org.spreadme.component.test.message.UserMessage;
-import org.spreadme.component.test.task.TestTask;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,17 +49,25 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = RedisTest.class)
 public class RedisTest {
 
-	private final CountDownLatch countDownLatch = new CountDownLatch(5);
 
 	@Autowired
 	private CacheClient<String, User> cacheClient;
 	@Autowired
 	private MessagePublisher<UserMessage> publisher;
-	@Autowired
-	private TestTask testTask;
 
 	@Test
-	public void testCacheClient() throws InterruptedException {
+	public void testCacheClient1() throws InterruptedException {
+		doTest();
+	}
+
+	@Test
+	public void testCacheClient2() throws InterruptedException {
+		doTest();
+	}
+
+	private void doTest() throws InterruptedException {
+		CountDownLatch countDownLatch = new CountDownLatch(1);
+
 		User user = new User(StringUtil.randomString(4), 20, new Date());
 		user.setSampler(new ProcessorSampler());
 		cacheClient.put(user.getName(), user, 100, TimeUnit.SECONDS);
@@ -70,7 +77,6 @@ public class RedisTest {
 		message.setUser(cacheClient.get(user.getName()));
 		publisher.publish(message);
 
-		testTask.setCountDownLatch(countDownLatch);
 		countDownLatch.await();
 	}
 }

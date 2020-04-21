@@ -51,7 +51,7 @@ public class TaskSchedulingProperties {
 		/**
 		 * Maximum allowed number of threads.
 		 */
-		private int size = 1;
+		private int size = 2;
 
 		public int getSize() {
 			return this.size;

@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package org.spreadme.component.job.lock;
+package org.spreadme.component.lock;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * Task Locker
+ * distribute lock
  * @author shuwei.wang
  */
-public interface TaskLock {
+public interface DistributeLock {
 
-	boolean lock(String key, Object value, long timeout, TimeUnit timeunit);
+	boolean tryLock(String key);
+
+	boolean tryLock(String key, long timeout, TimeUnit timeunit);
 
 	void unlock(String key);
 }

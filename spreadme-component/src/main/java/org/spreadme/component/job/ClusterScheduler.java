@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -33,10 +32,10 @@ import org.spreadme.commons.message.MessageListener;
 import org.spreadme.commons.message.MessagePublisher;
 import org.spreadme.commons.util.CollectionUtil;
 import org.spreadme.commons.util.StringUtil;
-import org.spreadme.component.job.lock.TaskLock;
 import org.spreadme.component.job.task.Task;
 import org.spreadme.component.job.task.TaskInfo;
 import org.spreadme.component.job.task.TaskMessage;
+import org.spreadme.component.lock.DistributeLock;
 
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -53,11 +52,11 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 
 	private Map<String, TaskInfo> taskInfos = new ConcurrentHashMap<>();
 
-	private TaskLock lock;
+	private DistributeLock lock;
 	private ThreadPoolTaskScheduler taskScheduler;
 	private MessagePublisher<TaskMessage> messagePublisher;
 
-	public ClusterScheduler(TaskLock lock,
+	public ClusterScheduler(DistributeLock lock,
 			ThreadPoolTaskScheduler taskScheduler,
 			MessagePublisher<TaskMessage> messagePublisher) {
 		this.lock = lock;
@@ -85,12 +84,12 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 	private void start(Task task) {
 		final String tasksName = task.getName();
 		ScheduledFuture<?> scheduledFuture = this.taskScheduler.schedule(() -> {
-			if (!this.lock.lock(tasksName, getId(), 2, TimeUnit.SECONDS)) {
+			if (!this.lock.tryLock(tasksName)) {
 				logger.debug("{} try lock fail.", tasksName);
 				return;
 			}
 			try {
-				logger.info("{} task is running.", tasksName);
+				logger.info("{}-{} is running.", tasksName, Thread.currentThread().getName());
 				task.execute();
 			}
 			finally {
@@ -99,7 +98,7 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 
 		}, new CronTrigger(task.getCorn()));
 
-		taskInfos.put("", new TaskInfo(task.getName(), task.getCorn(), false, scheduledFuture));
+		taskInfos.put(tasksName, new TaskInfo(task.getName(), task.getCorn(), false, scheduledFuture));
 
 	}
 
@@ -135,8 +134,7 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 
 	@EventListener
 	public void endSchedule(ContextClosedEvent event) {
-		this.taskScheduler.shutdown();
-		//TODO all cluster end will clear cache
+		taskInfos.keySet().forEach(s -> lock.unlock(s));
 		logger.info("schedule {} end.", getId());
 	}
 

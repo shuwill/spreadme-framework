@@ -14,43 +14,51 @@
  * limitations under the License.
  */
 
-package org.spreadme.component.job.lock;
+package org.spreadme.component.lock;
 
 import java.util.concurrent.TimeUnit;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
+import com.hazelcast.core.ILock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spreadme.commons.util.StringUtil;
 
 /**
- * Hazelcast TaskLock
+ * hazelcast distribute lock
  * @author shuwei.wang
  */
-public class HazelcastTaskLock implements TaskLock {
+public class HazelcastLock implements DistributeLock {
 
-	private final Logger logger = LoggerFactory.getLogger(HazelcastTaskLock.class);
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private IMap<String, Object> tasks;
+	private HazelcastInstance instance;
 
-	public HazelcastTaskLock(HazelcastInstance instance) {
-		this.tasks = instance.getMap(this.getClass().getName());
+	public HazelcastLock(HazelcastInstance instance) {
+		this.instance = instance;
 	}
 
 	@Override
-	public boolean lock(String key, Object value, long timeout, TimeUnit timeunit) {
+	public boolean tryLock(String key) {
+		ILock locker = this.instance.getLock(key);
+		return locker.tryLock();
+	}
+
+	@Override
+	public boolean tryLock(String key, long timeout, TimeUnit timeunit) {
+		ILock locker = this.instance.getLock(key);
 		try {
-			return this.tasks.tryLock(key, 0, timeunit, timeout, timeunit);
+			return locker.tryLock(timeout, timeunit);
 		}
 		catch (InterruptedException e) {
 			logger.error(StringUtil.stringifyException(e));
+			return false;
 		}
-		return false;
 	}
 
 	@Override
 	public void unlock(String key) {
-		this.tasks.unlock(key);
+		ILock locker = this.instance.getLock(key);
+		locker.unlock();
 	}
 }

@@ -23,10 +23,10 @@ import org.spreadme.boot.condition.ConditionalOnBean;
 import org.spreadme.commons.cache.CacheClient;
 import org.spreadme.commons.message.MessagePublisher;
 import org.spreadme.component.hazelcast.HazelcastInstanceFactory;
-import org.spreadme.component.job.lock.HazelcastTaskLock;
-import org.spreadme.component.job.lock.RedisTaskLock;
-import org.spreadme.component.job.lock.TaskLock;
 import org.spreadme.component.job.task.TaskMessage;
+import org.spreadme.component.lock.DistributeLock;
+import org.spreadme.component.lock.HazelcastLock;
+import org.spreadme.component.lock.RedisLock;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,21 +44,21 @@ public class SchedulerConfiguration {
 
 	@Bean
 	@ConditionalOnBean(HazelcastInstanceFactory.class)
-	public TaskLock hazelcastTaskLock(HazelcastInstance instance) {
-		return new HazelcastTaskLock(instance);
+	public DistributeLock hazelcastTaskLock(HazelcastInstance instance) {
+		return new HazelcastLock(instance);
 	}
 
 	@Bean
 	@ConditionalOnBean(RedisTemplate.class)
-	public TaskLock redisTaskLock(RedisTemplate<String, Object> redisTemplate) {
-		return new RedisTaskLock(redisTemplate);
+	public DistributeLock redisTaskLock(RedisTemplate<String, Long> redisTemplate) {
+		return new RedisLock(redisTemplate);
 	}
 
 	@Bean
-	@ConditionalOnBean({TaskLock.class, CacheClient.class, MessagePublisher.class})
-	public Scheduler scheduler(TaskLock lock,
-			ThreadPoolTaskScheduler taskScheduler,
-			MessagePublisher<TaskMessage> messagePublisher) {
+	@ConditionalOnBean({DistributeLock.class, CacheClient.class, MessagePublisher.class})
+	public Scheduler scheduler(DistributeLock lock,
+			MessagePublisher<TaskMessage> messagePublisher,
+			ThreadPoolTaskScheduler taskScheduler) {
 
 		logger.info("use the tasklock {}", lock.getClass().getName());
 		return new ClusterScheduler(lock, taskScheduler, messagePublisher);
