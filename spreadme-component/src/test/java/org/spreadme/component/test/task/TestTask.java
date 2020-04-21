@@ -16,6 +16,7 @@
 
 package org.spreadme.component.test.task;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -31,6 +32,8 @@ import org.springframework.stereotype.Component;
 public class TestTask implements Task {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
+
+	private CountDownLatch downLatch;
 
 	@Override
 	public String getName() {
@@ -50,11 +53,15 @@ public class TestTask implements Task {
 	@Override
 	public void execute() {
 		try {
-			TimeUnit.SECONDS.sleep(40);
+			TimeUnit.SECONDS.sleep(2);
 		}
 		catch (InterruptedException ignore) {
 
 		}
+		this.downLatch.countDown();
 	}
 
+	public void setDownLatch(CountDownLatch downLatch) {
+		this.downLatch = downLatch;
+	}
 }

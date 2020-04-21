@@ -34,6 +34,7 @@ import org.spreadme.component.annotation.EnableCache;
 import org.spreadme.component.annotation.EnableMessage;
 import org.spreadme.component.test.entity.User;
 import org.spreadme.component.test.message.UserMessage;
+import org.spreadme.component.test.task.TestTask;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,14 +56,11 @@ public class HazelcastTest {
 	private CacheClient<String, User> cacheClient;
 	@Autowired
 	private MessagePublisher<UserMessage> publisher;
+	@Autowired
+	private TestTask task;
 
 	@Test
-	public void testCacheClient1() throws InterruptedException {
-		doTest();
-	}
-
-	@Test
-	public void testCacheClient2() throws InterruptedException {
+	public void testCacheClient() throws InterruptedException {
 		doTest();
 	}
 
@@ -77,6 +75,7 @@ public class HazelcastTest {
 		UserMessage message = new UserMessage();
 		message.setUser(cacheClient.get(user.getName()));
 		publisher.publish(message);
+		task.setDownLatch(countDownLatch);
 
 		countDownLatch.await();
 	}
