@@ -36,6 +36,7 @@ import org.spreadme.component.job.task.Task;
 import org.spreadme.component.job.task.TaskInfo;
 import org.spreadme.component.job.task.TaskMessage;
 import org.spreadme.component.lock.DistributeLock;
+import org.spreadme.component.lock.RedisLock;
 
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -134,7 +135,9 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 
 	@EventListener
 	public void endSchedule(ContextClosedEvent event) {
-		taskInfos.keySet().forEach(s -> lock.unlock(s));
+		if(lock instanceof RedisLock){
+			taskInfos.keySet().forEach(s -> lock.unlock(s));
+		}
 		logger.info("schedule {} end.", getId());
 	}
 
