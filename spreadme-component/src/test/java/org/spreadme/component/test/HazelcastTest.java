@@ -60,7 +60,12 @@ public class HazelcastTest {
 	private TestTask task;
 
 	@Test
-	public void testCacheClient() throws InterruptedException {
+	public void testCacheClient1() throws InterruptedException {
+		doTest();
+	}
+
+	@Test
+	public void testCacheClient2() throws InterruptedException {
 		doTest();
 	}
 

@@ -35,7 +35,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
- * redis distribute lock
+ * redis distribute lock, only support a single redis
  * @author shuwei.wang
  */
 public class RedisLock implements DistributeLock {
@@ -70,10 +70,8 @@ public class RedisLock implements DistributeLock {
 
 		ScheduledFuture<?> future = this.taskScheduler.scheduleAtFixedRate(() -> {
 
-			Long expire = redisTemplate.getExpire(key, TimeUnit.SECONDS);
-			final long newExpire = (expire == null ? 0 : expire) + LOCK_EXPIRATION_INTERVAL_SECONDS;
-			logger.debug("Lengthen {} expire time {} to {} senconds", key, expire, newExpire);
-			redisTemplate.expire(key, newExpire, TimeUnit.SECONDS);
+			logger.debug("Change {} expire time to {} senconds", key, LOCK_EXPIRATION_INTERVAL_SECONDS);
+			redisTemplate.expire(key, LOCK_EXPIRATION_INTERVAL_SECONDS, TimeUnit.SECONDS);
 
 		}, 0, LOCK_EXPIRATION_INTERVAL_SECONDS / 3, TimeUnit.SECONDS);
 

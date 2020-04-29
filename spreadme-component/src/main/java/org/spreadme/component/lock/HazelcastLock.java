@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.ILock;
+import com.hazelcast.core.IMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spreadme.commons.util.StringUtil;
@@ -47,6 +48,7 @@ public class HazelcastLock implements DistributeLock {
 	@Override
 	public boolean tryLock(String key, long timeout, TimeUnit timeunit) {
 		ILock locker = this.instance.getLock(key);
+		IMap<String,Long> iMap = this.instance.getMap(getClass().getName());
 		try {
 			return locker.tryLock(timeout, timeunit);
 		}

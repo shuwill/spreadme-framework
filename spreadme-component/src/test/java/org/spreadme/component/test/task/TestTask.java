@@ -53,12 +53,14 @@ public class TestTask implements Task {
 	@Override
 	public void execute() {
 		try {
-			TimeUnit.SECONDS.sleep(2);
+			TimeUnit.SECONDS.sleep(40);
 		}
 		catch (InterruptedException ignore) {
 
 		}
-		this.downLatch.countDown();
+		if(this.downLatch != null){
+			this.downLatch.countDown();
+		}
 	}
 
 	public void setDownLatch(CountDownLatch downLatch) {

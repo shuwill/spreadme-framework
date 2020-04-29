@@ -17,6 +17,7 @@
 package org.spreadme.component.hazelcast;
 
 import com.hazelcast.config.Config;
+import com.hazelcast.config.ManagementCenterConfig;
 import com.hazelcast.config.NetworkConfig;
 import org.spreadme.boot.condition.ConditionalOnMissingBean;
 import org.spreadme.commons.util.StringUtil;
@@ -45,6 +46,12 @@ public class HazelcastConfiguration {
 			networkConfig.setPublicAddress(properties.getIp());
 		}
 		config.setNetworkConfig(networkConfig);
+		if (StringUtil.isNotBlank(properties.getCenterConfigUrl())) {
+			ManagementCenterConfig centerConfig = new ManagementCenterConfig();
+			centerConfig.setEnabled(true);
+			centerConfig.setUrl(properties.getCenterConfigUrl());
+			config.setManagementCenterConfig(centerConfig);
+		}
 		return config;
 	}
 

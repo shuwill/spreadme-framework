@@ -30,6 +30,7 @@ public class HazelcastProperties {
 	private String instanceName;
 	private String ip;
 	private Integer port;
+	private String centerConfigUrl;
 
 	public String getInstanceName() {
 		return instanceName;
@@ -55,4 +56,11 @@ public class HazelcastProperties {
 		this.port = port;
 	}
 
+	public String getCenterConfigUrl() {
+		return centerConfigUrl;
+	}
+
+	public void setCenterConfigUrl(String centerConfigUrl) {
+		this.centerConfigUrl = centerConfigUrl;
+	}
 }
