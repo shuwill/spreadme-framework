@@ -43,14 +43,16 @@ public class RedisLock implements DistributeLock {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	public static final long LOCK_EXPIRATION_INTERVAL_SECONDS = 30;
+	private static final Integer SCHEDULER_CORE_SIZE = Runtime.getRuntime().availableProcessors() + 2;
 	private static final Map<String, ScheduledFuture<?>> FUTURE_MAP = new ConcurrentHashMap<>();
 
 	private RedisTemplate<String, Long> redisTemplate;
+	// the shceduler task to use add expire time of key
 	private ScheduledExecutorService taskScheduler;
 
 	public RedisLock(RedisTemplate<String, Long> redisTemplate) {
 		this.redisTemplate = redisTemplate;
-		this.taskScheduler = Executors.newScheduledThreadPool(1);
+		this.taskScheduler = Executors.newScheduledThreadPool(SCHEDULER_CORE_SIZE);
 	}
 
 	@Override
