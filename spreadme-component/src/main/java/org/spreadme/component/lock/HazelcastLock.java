@@ -42,13 +42,19 @@ public class HazelcastLock implements DistributeLock {
 
 	@Override
 	public boolean tryLock(String key) {
-		return this.locker.tryLock(key);
+		if (this.isRunning()) {
+			return this.locker.tryLock(key);
+		}
+		return false;
 	}
 
 	@Override
 	public boolean tryLock(String key, long timeout, TimeUnit timeunit) {
 		try {
-			return this.locker.tryLock(key, timeout, timeunit);
+			if (this.isRunning()) {
+				return this.locker.tryLock(key, timeout, timeunit);
+			}
+			return false;
 		}
 		catch (InterruptedException e) {
 			logger.error(StringUtil.stringifyException(e));
@@ -58,8 +64,12 @@ public class HazelcastLock implements DistributeLock {
 
 	@Override
 	public void unlock(String key) {
-		if(instance.getLifecycleService().isRunning()){
+		if (this.isRunning()) {
 			this.locker.unlock(key);
 		}
+	}
+
+	private boolean isRunning() {
+		return this.instance.getLifecycleService().isRunning();
 	}
 }

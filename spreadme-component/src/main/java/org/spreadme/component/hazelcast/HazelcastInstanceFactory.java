@@ -40,9 +40,7 @@ public class HazelcastInstanceFactory implements FactoryBean<HazelcastInstance> 
 
 	public HazelcastInstance getInstance() {
 		this.config.setProperty("hazelcast.logging.type", "slf4j");
-		HazelcastInstance instance = Hazelcast.newHazelcastInstance(this.config);
-		logger.info("Hazelcast Instance {}", instance);
-		return instance;
+		return Hazelcast.newHazelcastInstance(this.config);
 	}
 
 	@Override

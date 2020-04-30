@@ -70,7 +70,7 @@ public class HazelcastTest {
 	}
 
 	private void doTest() throws InterruptedException {
-		CountDownLatch countDownLatch = new CountDownLatch(1);
+		CountDownLatch countDownLatch = new CountDownLatch(5);
 
 		User user = new User(StringUtil.randomString(4), 20, new Date());
 		user.setSampler(new ProcessorSampler());
@@ -87,6 +87,8 @@ public class HazelcastTest {
 
 	@After
 	public void after() {
-		instance.shutdown();
+		if(instance.getLifecycleService().isRunning()){
+			instance.shutdown();
+		}
 	}
 }

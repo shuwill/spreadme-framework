@@ -19,6 +19,7 @@ package org.spreadme.component.hazelcast;
 import java.util.Arrays;
 
 import com.hazelcast.config.Config;
+import com.hazelcast.config.GroupConfig;
 import com.hazelcast.config.JoinConfig;
 import com.hazelcast.config.ManagementCenterConfig;
 import com.hazelcast.config.MulticastConfig;
@@ -44,11 +45,15 @@ public class HazelcastConfiguration {
 	public Config config(HazelcastProperties properties) {
 		Config config = new Config();
 
+		GroupConfig groupConfig = new GroupConfig();
+		groupConfig.setName(properties.getGroup());
+
 		NetworkConfig networkConfig = new NetworkConfig();
 		// TCP/IP config
 		TcpIpConfig tcpIpConfig = new TcpIpConfig();
 		tcpIpConfig.setEnabled(true);
 		tcpIpConfig.setMembers(Arrays.asList(properties.getMembers()));
+		tcpIpConfig.setConnectionTimeoutSeconds(properties.getConnectTimeout());
 
 		// MulticastConfig
 		MulticastConfig multicastConfig = new MulticastConfig();

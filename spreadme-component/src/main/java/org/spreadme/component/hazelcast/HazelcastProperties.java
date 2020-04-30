@@ -27,16 +27,17 @@ public class HazelcastProperties {
 
 	public static final String PREFIX = "spring.hazelcast";
 
-	private String instanceName;
-	private String[] members;
+	private String group = "dev";
+	private String[] members = new String[] {"127.0.0.1"};
+	private Integer connectTimeout = 60;
 	private String centerConfigUrl;
 
-	public String getInstanceName() {
-		return instanceName;
+	public String getGroup() {
+		return group;
 	}
 
-	public void setInstanceName(String instanceName) {
-		this.instanceName = instanceName;
+	public void setGroup(String group) {
+		this.group = group;
 	}
 
 	public String[] getMembers() {
@@ -45,6 +46,14 @@ public class HazelcastProperties {
 
 	public void setMembers(String[] members) {
 		this.members = members;
+	}
+
+	public Integer getConnectTimeout() {
+		return connectTimeout;
+	}
+
+	public void setConnectTimeout(Integer connectTimeout) {
+		this.connectTimeout = connectTimeout;
 	}
 
 	public String getCenterConfigUrl() {
