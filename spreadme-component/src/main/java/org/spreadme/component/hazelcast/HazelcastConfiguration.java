@@ -16,9 +16,14 @@
 
 package org.spreadme.component.hazelcast;
 
+import java.util.Arrays;
+
 import com.hazelcast.config.Config;
+import com.hazelcast.config.JoinConfig;
 import com.hazelcast.config.ManagementCenterConfig;
+import com.hazelcast.config.MulticastConfig;
 import com.hazelcast.config.NetworkConfig;
+import com.hazelcast.config.TcpIpConfig;
 import org.spreadme.boot.condition.ConditionalOnMissingBean;
 import org.spreadme.commons.util.StringUtil;
 
@@ -37,15 +42,28 @@ public class HazelcastConfiguration {
 
 	@Bean
 	public Config config(HazelcastProperties properties) {
-		Config config = new Config(properties.getInstanceName());
+		Config config = new Config();
+
 		NetworkConfig networkConfig = new NetworkConfig();
-		if (properties.getPort() != null) {
-			networkConfig.setPort(properties.getPort());
-		}
-		if (StringUtil.isNotBlank(properties.getIp())) {
-			networkConfig.setPublicAddress(properties.getIp());
-		}
+		// TCP/IP config
+		TcpIpConfig tcpIpConfig = new TcpIpConfig();
+		tcpIpConfig.setEnabled(true);
+		tcpIpConfig.setMembers(Arrays.asList(properties.getMembers()));
+
+		// MulticastConfig
+		MulticastConfig multicastConfig = new MulticastConfig();
+		multicastConfig.setEnabled(false);
+
+		// JoinConfig
+		JoinConfig joinConfig = new JoinConfig();
+		joinConfig.setTcpIpConfig(tcpIpConfig);
+		joinConfig.setMulticastConfig(multicastConfig);
+
+		// NetworkConfig
+		networkConfig.setJoin(joinConfig);
 		config.setNetworkConfig(networkConfig);
+
+		// ManagementCenterConfig
 		if (StringUtil.isNotBlank(properties.getCenterConfigUrl())) {
 			ManagementCenterConfig centerConfig = new ManagementCenterConfig();
 			centerConfig.setEnabled(true);

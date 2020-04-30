@@ -28,8 +28,7 @@ public class HazelcastProperties {
 	public static final String PREFIX = "spring.hazelcast";
 
 	private String instanceName;
-	private String ip;
-	private Integer port;
+	private String[] members;
 	private String centerConfigUrl;
 
 	public String getInstanceName() {
@@ -40,20 +39,12 @@ public class HazelcastProperties {
 		this.instanceName = instanceName;
 	}
 
-	public String getIp() {
-		return ip;
+	public String[] getMembers() {
+		return members;
 	}
 
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-
-	public Integer getPort() {
-		return port;
-	}
-
-	public void setPort(Integer port) {
-		this.port = port;
+	public void setMembers(String[] members) {
+		this.members = members;
 	}
 
 	public String getCenterConfigUrl() {

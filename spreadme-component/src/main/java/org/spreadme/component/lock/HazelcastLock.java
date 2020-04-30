@@ -19,7 +19,6 @@ package org.spreadme.component.lock;
 import java.util.concurrent.TimeUnit;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.ILock;
 import com.hazelcast.core.IMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,23 +33,22 @@ public class HazelcastLock implements DistributeLock {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private HazelcastInstance instance;
+	private IMap<String, Object> locker;
 
 	public HazelcastLock(HazelcastInstance instance) {
 		this.instance = instance;
+		this.locker = instance.getMap(getClass().getName());
 	}
 
 	@Override
 	public boolean tryLock(String key) {
-		ILock locker = this.instance.getLock(key);
-		return locker.tryLock();
+		return this.locker.tryLock(key);
 	}
 
 	@Override
 	public boolean tryLock(String key, long timeout, TimeUnit timeunit) {
-		ILock locker = this.instance.getLock(key);
-		IMap<String,Long> iMap = this.instance.getMap(getClass().getName());
 		try {
-			return locker.tryLock(timeout, timeunit);
+			return this.locker.tryLock(key, timeout, timeunit);
 		}
 		catch (InterruptedException e) {
 			logger.error(StringUtil.stringifyException(e));
@@ -60,7 +58,8 @@ public class HazelcastLock implements DistributeLock {
 
 	@Override
 	public void unlock(String key) {
-		ILock locker = this.instance.getLock(key);
-		locker.unlock();
+		if(instance.getLifecycleService().isRunning()){
+			this.locker.unlock(key);
+		}
 	}
 }
