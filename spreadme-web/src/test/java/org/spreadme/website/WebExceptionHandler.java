@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.spreadme.web.test;
+package org.spreadme.website;
 
 import java.util.List;
 import java.util.stream.Collectors;

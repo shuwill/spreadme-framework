@@ -28,10 +28,7 @@ import org.spreadme.commons.cache.CacheClient;
 import org.spreadme.commons.message.MessagePublisher;
 import org.spreadme.commons.system.sampler.ProcessorSampler;
 import org.spreadme.commons.util.StringUtil;
-import org.spreadme.component.annotation.EnableCache;
-import org.spreadme.component.annotation.EnableMessage;
-import org.spreadme.component.cache.CacheType;
-import org.spreadme.component.message.MessageType;
+import org.spreadme.component.annotation.EnableRedis;
 import org.spreadme.component.test.entity.User;
 import org.spreadme.component.test.message.UserMessage;
 import org.spreadme.component.test.task.TestTask;
@@ -43,9 +40,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 /**
  * @author shuwei.wang
  */
+@EnableRedis
 @SpringBootApplication
-@EnableCache(type = CacheType.redis)
-@EnableMessage(type = MessageType.redis)
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RedisTest.class)
 public class RedisTest {

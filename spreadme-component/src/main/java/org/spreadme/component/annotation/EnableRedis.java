@@ -22,6 +22,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.spreadme.component.cache.redis.RedisCacheConfiguration;
+import org.spreadme.component.message.redis.RedisMessageConfiguration;
 import org.spreadme.component.redis.RedisConfiguration;
 
 import org.springframework.context.annotation.Import;
@@ -33,6 +35,6 @@ import org.springframework.context.annotation.Import;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.TYPE})
-@Import(RedisConfiguration.class)
+@Import({RedisConfiguration.class, RedisCacheConfiguration.class, RedisMessageConfiguration.class})
 public @interface EnableRedis {
 }

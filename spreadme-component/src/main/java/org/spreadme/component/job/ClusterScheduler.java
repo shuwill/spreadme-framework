@@ -128,14 +128,14 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 	public void startSchedule(ContextRefreshedEvent event) {
 		Map<String, Task> tasks = event.getApplicationContext().getBeansOfType(Task.class);
 		if (!tasks.isEmpty()) {
-			logger.info("schedule {} start.", this.getClass().getName());
+			logger.info("find {} task, schedule {} start.", tasks.size(), this.getClass().getName());
 			this.schedule(tasks.values());
 		}
 	}
 
 	@EventListener
 	public void endSchedule(ContextClosedEvent event) {
-		if(lock instanceof RedisLock){
+		if (lock instanceof RedisLock) {
 			taskInfos.keySet().forEach(s -> lock.unlock(s));
 		}
 		logger.info("schedule {} end.", getId());

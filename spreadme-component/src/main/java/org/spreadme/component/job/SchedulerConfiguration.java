@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.spreadme.boot.condition.ConditionalOnBean;
 import org.spreadme.commons.cache.CacheClient;
 import org.spreadme.commons.message.MessagePublisher;
-import org.spreadme.component.hazelcast.HazelcastInstanceFactory;
 import org.spreadme.component.job.task.TaskMessage;
 import org.spreadme.component.lock.DistributeLock;
 import org.spreadme.component.lock.HazelcastLock;
@@ -43,7 +42,7 @@ public class SchedulerConfiguration {
 	private final Logger logger = LoggerFactory.getLogger(SchedulerConfiguration.class);
 
 	@Bean
-	@ConditionalOnBean(HazelcastInstanceFactory.class)
+	@ConditionalOnBean(HazelcastInstance.class)
 	public DistributeLock hazelcastTaskLock(HazelcastInstance instance) {
 		return new HazelcastLock(instance);
 	}

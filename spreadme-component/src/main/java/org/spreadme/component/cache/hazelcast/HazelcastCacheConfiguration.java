@@ -18,7 +18,6 @@ package org.spreadme.component.cache.hazelcast;
 
 import com.hazelcast.core.HazelcastInstance;
 import org.spreadme.commons.cache.CacheClient;
-import org.spreadme.component.annotation.EnableHazelcast;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +27,6 @@ import org.springframework.context.annotation.Configuration;
  * @author shuwei.wang
  */
 @Configuration
-@EnableHazelcast
 public class HazelcastCacheConfiguration {
 
 	@Bean

@@ -22,7 +22,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.spreadme.component.cache.hazelcast.HazelcastCacheConfiguration;
 import org.spreadme.component.hazelcast.HazelcastConfiguration;
+import org.spreadme.component.message.hazelcast.HazelcastMessageConfiguration;
 
 import org.springframework.context.annotation.Import;
 
@@ -33,7 +35,7 @@ import org.springframework.context.annotation.Import;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.TYPE})
-@Import(HazelcastConfiguration.class)
+@Import({HazelcastConfiguration.class, HazelcastCacheConfiguration.class, HazelcastMessageConfiguration.class})
 public @interface EnableHazelcast {
 
 	String name() default "";

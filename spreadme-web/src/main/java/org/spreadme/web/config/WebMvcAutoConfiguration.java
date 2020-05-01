@@ -401,7 +401,9 @@ public class WebMvcAutoConfiguration {
 
 		private boolean isReadable(Resource resource) {
 			try {
-				return resource.exists() && (resource.getURL() != null);
+				if (!resource.exists()) return false;
+				resource.getURL();
+				return true;
 			}
 			catch (Exception ex) {
 				return false;

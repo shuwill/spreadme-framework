@@ -19,7 +19,6 @@ package org.spreadme.component.message.redis;
 import org.spreadme.commons.message.Message;
 import org.spreadme.commons.message.MessageProducer;
 import org.spreadme.commons.message.MessagePublisher;
-import org.spreadme.component.annotation.EnableRedis;
 import org.spreadme.component.message.MessageListenerRegistrarPostProcessor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
  * @author shuwei.wang
  */
 @Configuration
-@EnableRedis
 public class RedisMessageConfiguration {
 
 	@Autowired

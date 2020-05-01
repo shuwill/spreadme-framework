@@ -20,7 +20,6 @@ import com.hazelcast.core.HazelcastInstance;
 import org.spreadme.commons.message.Message;
 import org.spreadme.commons.message.MessageProducer;
 import org.spreadme.commons.message.MessagePublisher;
-import org.spreadme.component.annotation.EnableHazelcast;
 import org.spreadme.component.message.MessageListenerRegistrarPostProcessor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
  * @author shuwei.wang
  */
 @Configuration
-@EnableHazelcast
 public class HazelcastMessageConfiguration {
 
 	@Autowired

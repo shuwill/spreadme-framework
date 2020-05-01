@@ -25,7 +25,8 @@ import com.hazelcast.config.ManagementCenterConfig;
 import com.hazelcast.config.MulticastConfig;
 import com.hazelcast.config.NetworkConfig;
 import com.hazelcast.config.TcpIpConfig;
-import org.spreadme.boot.condition.ConditionalOnMissingBean;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.instance.HazelcastInstanceFactory;
 import org.spreadme.commons.util.StringUtil;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -37,7 +38,6 @@ import org.springframework.context.annotation.Configuration;
  * @author shuwei.wang
  */
 @Configuration
-@ConditionalOnMissingBean(HazelcastInstanceFactory.class)
 @EnableConfigurationProperties(HazelcastProperties.class)
 public class HazelcastConfiguration {
 
@@ -79,7 +79,8 @@ public class HazelcastConfiguration {
 	}
 
 	@Bean
-	public HazelcastInstanceFactory hazelcastInstanceFactory(Config config) {
-		return new HazelcastInstanceFactory(config);
+	public HazelcastInstance hazelcastInstance(Config config) {
+		config.setProperty("hazelcast.logging.type", "slf4j");
+		return HazelcastInstanceFactory.newHazelcastInstance(config);
 	}
 }
