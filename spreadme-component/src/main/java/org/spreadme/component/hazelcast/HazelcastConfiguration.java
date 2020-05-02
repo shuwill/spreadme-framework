@@ -75,12 +75,15 @@ public class HazelcastConfiguration {
 			centerConfig.setUrl(properties.getCenterConfigUrl());
 			config.setManagementCenterConfig(centerConfig);
 		}
+
+		// logger type
+		config.setProperty("hazelcast.logging.type", properties.getLoggerType());
+
 		return config;
 	}
 
 	@Bean
 	public HazelcastInstance hazelcastInstance(Config config) {
-		config.setProperty("hazelcast.logging.type", "slf4j");
 		return HazelcastInstanceFactory.newHazelcastInstance(config);
 	}
 }

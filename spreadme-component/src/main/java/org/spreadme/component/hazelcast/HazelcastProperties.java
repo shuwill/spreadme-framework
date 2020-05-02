@@ -31,6 +31,7 @@ public class HazelcastProperties {
 	private String[] members = new String[] {"127.0.0.1"};
 	private Integer connectTimeout = 60;
 	private String centerConfigUrl;
+	private String loggerType = "slf4j";
 
 	public String getGroup() {
 		return group;
@@ -62,5 +63,13 @@ public class HazelcastProperties {
 
 	public void setCenterConfigUrl(String centerConfigUrl) {
 		this.centerConfigUrl = centerConfigUrl;
+	}
+
+	public String getLoggerType() {
+		return loggerType;
+	}
+
+	public void setLoggerType(String loggerType) {
+		this.loggerType = loggerType;
 	}
 }

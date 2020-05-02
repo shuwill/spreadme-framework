@@ -87,7 +87,7 @@ public class OnBeanCondition implements Condition {
 
 	private void collectBeanNamesForType(Set<String> result, ListableBeanFactory beanFactory, Class<?> type) {
 		String[] beanNames = beanFactory.getBeanNamesForType(type);
-		if (beanNames != null && beanNames.length > 0) {
+		if (beanNames.length > 0) {
 			result.addAll(Arrays.asList(beanNames));
 		}
 		if (beanFactory instanceof HierarchicalBeanFactory) {
