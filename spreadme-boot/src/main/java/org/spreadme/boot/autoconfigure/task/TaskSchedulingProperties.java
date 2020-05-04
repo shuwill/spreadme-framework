@@ -17,6 +17,7 @@
 package org.spreadme.boot.autoconfigure.task;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Configuration properties for task scheduling.
@@ -27,6 +28,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("spring.task.scheduling")
 public class TaskSchedulingProperties {
 
+	@NestedConfigurationProperty
 	private final Pool pool = new Pool();
 
 	/**

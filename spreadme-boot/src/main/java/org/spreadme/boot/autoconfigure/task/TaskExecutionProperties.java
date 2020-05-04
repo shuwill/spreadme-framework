@@ -19,6 +19,7 @@ package org.spreadme.boot.autoconfigure.task;
 import java.time.Duration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Configuration properties for task execution.
@@ -29,6 +30,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("spring.task.execution")
 public class TaskExecutionProperties {
 
+	@NestedConfigurationProperty
 	private final Pool pool = new Pool();
 
 	/**
