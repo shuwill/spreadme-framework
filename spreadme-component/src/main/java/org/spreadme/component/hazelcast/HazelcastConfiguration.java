@@ -32,6 +32,8 @@ import org.spreadme.commons.util.StringUtil;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.context.event.EventListener;
 
 /**
  * Hazelcast Configuration
@@ -85,5 +87,11 @@ public class HazelcastConfiguration {
 	@Bean
 	public HazelcastInstance hazelcastInstance(Config config) {
 		return HazelcastInstanceFactory.newHazelcastInstance(config);
+	}
+
+	@EventListener
+	public void hazelcastDestory(ContextClosedEvent event) {
+		HazelcastInstance instance = event.getApplicationContext().getBean(HazelcastInstance.class);
+		instance.shutdown();
 	}
 }
