@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -36,6 +37,7 @@ import org.spreadme.commons.id.IdentifierGenerator;
 import org.spreadme.commons.id.support.PrefixedLeftNumericGenerator;
 import org.spreadme.commons.id.support.SnowflakeLongGenerator;
 import org.spreadme.commons.id.support.TimeBasedIdentifierGenerator;
+import org.spreadme.commons.id.support.UUIDGenerator;
 import org.spreadme.commons.lang.Dates;
 import org.spreadme.commons.lang.ImageFormats;
 import org.spreadme.commons.lang.Randoms;
@@ -70,11 +72,13 @@ public class UtilTest {
 
 	@Test
 	public void testId() {
+		IdentifierGenerator<UUID> uuidIdentifierGenerator = new UUIDGenerator();
 		IdentifierGenerator<String> timeBasedGenerator = new TimeBasedIdentifierGenerator();
 		IdentifierGenerator<String> leftNumericGenerator = new PrefixedLeftNumericGenerator(StringUtil.randomString(1), true, 3);
 		IdentifierGenerator<Long> longIdentifierGenerator = new SnowflakeLongGenerator(1, 1);
 		for (int i = 0; i < 100; i++) {
-			Console.info("timebase: %s, numeric: %s, longid: %s",
+			Console.info("uuid: %s, timebase: %s, numeric: %s, longid: %s",
+					uuidIdentifierGenerator.nextIdentifier().toString(),
 					timeBasedGenerator.nextIdentifier(),
 					leftNumericGenerator.nextIdentifier(),
 					longIdentifierGenerator.nextIdentifier());
