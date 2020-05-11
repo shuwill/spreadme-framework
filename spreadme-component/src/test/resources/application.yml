@@ -1,0 +1,10 @@
+spring:
+  main:
+    banner-mode: 'off'
+  redis:
+    host: 10.147.18.2
+    password: Admin2020redis
+  task:
+    execution:
+      pool:
+        core-size: 6
