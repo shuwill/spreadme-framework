@@ -164,4 +164,7 @@ public enum ContentType {
 		return value;
 	}
 
+	public static ContentType resolve(String name){
+		return map.get(name);
+	}
 }

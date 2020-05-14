@@ -17,8 +17,10 @@
 package org.spreadme.component.job;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.spreadme.component.job.task.Task;
+import org.spreadme.component.job.task.TaskInfo;
 
 
 public interface Scheduler {
@@ -30,4 +32,6 @@ public interface Scheduler {
 	void cancel(String taskName);
 
 	void cron(String taskName, String cron);
+
+	Map<String, TaskInfo> getTasks();
 }

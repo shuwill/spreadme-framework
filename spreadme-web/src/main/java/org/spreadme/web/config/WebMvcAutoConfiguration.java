@@ -17,10 +17,8 @@
 package org.spreadme.web.config;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,7 +49,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.task.AsyncTaskExecutor;
@@ -80,13 +77,11 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
-import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -296,48 +291,6 @@ public class WebMvcAutoConfiguration {
 		public static RequestContextFilter requestContextFilter() {
 			return new OrderedRequestContextFilter();
 		}
-
-		@Configuration
-		public static class FaviconConfiguration implements ResourceLoaderAware {
-
-			private final ResourceProperties resourceProperties;
-
-			private ResourceLoader resourceLoader;
-
-			public FaviconConfiguration(ResourceProperties resourceProperties) {
-				this.resourceProperties = resourceProperties;
-			}
-
-			@Override
-			public void setResourceLoader(ResourceLoader resourceLoader) {
-				this.resourceLoader = resourceLoader;
-			}
-
-			@Bean
-			public SimpleUrlHandlerMapping faviconHandlerMapping() {
-				SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();
-				mapping.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
-				mapping.setUrlMap(Collections.singletonMap("**/favicon.ico", faviconRequestHandler()));
-				return mapping;
-			}
-
-			@Bean
-			public ResourceHttpRequestHandler faviconRequestHandler() {
-				ResourceHttpRequestHandler requestHandler = new ResourceHttpRequestHandler();
-				requestHandler.setLocations(resolveFaviconLocations());
-				return requestHandler;
-			}
-
-			private List<Resource> resolveFaviconLocations() {
-				String[] staticLocations = getResourceLocations(this.resourceProperties.getStaticLocations());
-				List<Resource> locations = new ArrayList<>(staticLocations.length + 1);
-				Arrays.stream(staticLocations).map(this.resourceLoader::getResource).forEach(locations::add);
-				locations.add(new ClassPathResource("/"));
-				return Collections.unmodifiableList(locations);
-			}
-
-		}
-
 	}
 
 	/**

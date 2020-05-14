@@ -62,6 +62,7 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 			MessagePublisher<TaskMessage> messagePublisher) {
 		this.lock = lock;
 		this.taskScheduler = taskScheduler;
+		this.messagePublisher = messagePublisher;
 	}
 
 	@Override
@@ -124,6 +125,11 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 		messagePublisher.publish(message);
 	}
 
+	@Override
+	public Map<String, TaskInfo> getTasks() {
+		return this.taskInfos;
+	}
+
 	@EventListener
 	public void startSchedule(ContextRefreshedEvent event) {
 		Map<String, Task> tasks = event.getApplicationContext().getBeansOfType(Task.class);
@@ -149,16 +155,24 @@ public class ClusterScheduler implements Scheduler, MessageListener<TaskMessage>
 			CronTrigger trigger = Reflect.of(future).field("trigger").get();
 			String cron = message.getCron();
 			if (Bools.isTure(taskInfo.getCancel())) {
-				future.cancel(true);
-				logger.info("task {} is canceled.", taskInfo.getName());
-				return;
+				this.cancel(message.getTaskName(), future);
 			}
 			if (StringUtil.isNotBlank(cron) && trigger != null && !cron.equals(trigger.getExpression())) {
+				String originCron = trigger.getExpression();
 				CronSequenceGenerator sequenceGenerator = new CronSequenceGenerator(cron);
 				Reflect.of(trigger).set("sequenceGenerator", sequenceGenerator);
-				logger.info("change task cron {} to {}.", trigger.getExpression(), cron);
+				logger.info("change task cron {} to {}.", originCron, cron);
+				future.cancel(true);
+				Reflect.of(future).invoke("schedule");
+				taskInfo.setCron(cron);
 			}
 		}
+	}
+
+	private void cancel(String taskName, ScheduledFuture<?> future){
+		future.cancel(true);
+		this.taskInfos.remove(taskName);
+		logger.info("task {} is canceled.", taskName);
 	}
 
 	@Override
