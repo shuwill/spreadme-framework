@@ -74,8 +74,14 @@ public class RedisMessageListenerRegistar implements MessageListenerRegistrar {
 			containers.put(UUID.randomUUID().toString(), container);
 		}
 		else {
-			M message = (M) template.opsForList().rightPop(name);
-			executor.execute(() -> listener.on(message));
+			new Thread(() -> {
+				while (true){
+					M message = (M) template.opsForList().rightPop(name);
+					if(message != null){
+						executor.execute(() -> listener.on(message));
+					}
+				}
+			}, "redis message queue listener").start();
 		}
 	}
 
